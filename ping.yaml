@@ -1,0 +1,14 @@
+    - name: checking connectivity test
+      hosts: dev
+      tasks:
+      - name: checking connectivity
+        wait_for_connection:
+          timeout: 15
+        register: connection
+        ignore_errors: true
+       
+      - debug: msg="There is no packet drop and the server is reachable"
+        when: connection is not failed
+        
+      - debug: msg="Target Server is not reachable"
+        when: connection is failed
